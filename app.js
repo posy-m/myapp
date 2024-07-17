@@ -1,6 +1,8 @@
 const express = require("express")
+const cors = require("cors")
 
 const app = express()
+app.use(cros())
 
 app.get("/", (req, res) => {
   res.send("내가 보임?")
