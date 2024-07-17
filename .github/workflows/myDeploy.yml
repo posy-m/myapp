@@ -15,7 +15,6 @@ jobs: # 작업의 단위
       - name: shell console test # 가장 작은 작업 단위의 이름
         run: echo 'my ci/cd' # 작업에서 실행할 쉘 스크립트 내용 echo 출력 audfuddj
     
-    steps:
       - name: mykey # 이름은 mykey
         run: echo ${{ secrets.AWS_SECRET_KEY }} #aws에서 받은 키 는 깃 acrions에 넣어야함 민감한 것들은 거기다 넣으면 됨
 
