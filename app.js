@@ -5,7 +5,7 @@ const app = express()
 app.use(cors())
 
 app.get("/", (req, res) => {
-  res.send("내가 보임?")
+  res.send("헤헤헤 내가 배포한 사이트")
 })
 
 app.listen(3000, (req, res) => {
