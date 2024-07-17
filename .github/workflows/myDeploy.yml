@@ -1,21 +1,26 @@
-name: CI/CD 구축
-
-# 이벤트를 구독
-on: 
-  push : # push 이벤트가 발생하면 실행
-    branches: # push가 발생한 브랜치가 뭐일때 싱핼할지
-      - main
-
-jobs: # 작업의 단위
-  myTest: # 실별자 이름 ( 얘만 우리가 정해도 되는 이름)
-    runs-on: ubuntu-latest # 사용할 운영 체제 _ubuntu-latest : 최신버전
-
-    # 작업의 가장 작은 단위
-    steps: 
-      - name: shell console test # 가장 작은 작업 단위의 이름
-        run: echo 'my ci/cd' # 작업에서 실행할 쉘 스크립트 내용 echo 출력 audfuddj
-    
-      - name: mykey # 이름은 mykey
-        run: echo ${{ secrets.HOST }} 
-
+name : CI/CD 구축
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout
+          uses: actions/checkout@v4 # uses 사용할 라이브러리
+        - name: ssh key
+          uses: webfactory/ssh-agent@v0.5.3
+          with: # 작성할 속성을 정의한다.
+            ssh-private-key: ${{ secrets.AWS_SECRET_KEY }}
+        - name: ssh ec2 접속
+          uses: appleboy/ssh-action@v0.1.2
+          with: 
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            key: ${{ secrets.AWS_SECRET_KEY }}
+            port: ${{ secrets.PORT }}
+            script: | # 실행할 스크립트
+                cd /home/ubuntu
+                npm start
 
