@@ -60,15 +60,12 @@ jobs:
             cd /home/ubuntu
             rm -rf dist
             mkdir dist
-            rm -rf node_modules
-            mkdir node_modules
 
       - name: ec2에 아티펙트 내용 복사
         run: |
           ls
           pwd
           scp -r -i ~/.ssh/aws_key ./dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/dist/
-          scp -r -i ~/.ssh/aws_key ./node_modules/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/node_modules/
 
       - name: deploy to ec2
         uses: appleboy/ssh-action@v1.0.3
