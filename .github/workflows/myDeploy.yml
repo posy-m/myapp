@@ -90,3 +90,16 @@ jobs: # 작업의 단위
           scp -r -i ~/.ssh/aws_key ./dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/dist/
           scp -i ~/.ssh/aws_key package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/
           scp -i ~/.ssh/aws_key package-lock.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/
+
+      - name: ec2 npm install
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST}}
+          username: ${{ secret.USERNAME }}
+          key: ${{ secret.AWS_SECRET_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/ubuntu
+            ls
+            pwd
+            npm install
