@@ -75,7 +75,7 @@ jobs: # 작업의 단위
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME}}
           key: ${{ secrets.AWS_SECRET_KEY }}
-          posrt: ${{ screts.POST }}
+          posrt: ${{ secrets.POST }}
           script: |
             cd /home/ubuntu
             rm -rf dist
