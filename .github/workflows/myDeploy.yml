@@ -48,6 +48,7 @@ jobs: # 작업의 단위
             dist/
             package.json
             package-lock.json
+            system.config.js
 
       # 운영 서버에 전송 ec2에 파일을 전송
       # ssh
@@ -82,6 +83,7 @@ jobs: # 작업의 단위
             mkdir dist
             rm -rf package.json
             rm -rf package-lock.json
+            rm -rf system.config.js
 
       # ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/dist/ 원격 서버의 폴더에 파일을 복사한다.
       - name: EC2에 아티팩트 복사
@@ -90,6 +92,7 @@ jobs: # 작업의 단위
           scp -r -i ~/.ssh/aws_key ./dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/dist/
           scp -i ~/.ssh/aws_key package.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/
           scp -i ~/.ssh/aws_key package-lock.json ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/
+          scp -i ~/.ssh/aws_key system.config.js ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/
 
       - name: ec2 npm install
         uses: appleboy/ssh-action@v1.0.3
@@ -105,7 +108,9 @@ jobs: # 작업의 단위
             npm install
 
       - name: deploy to ec2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.3 # pm2 kill 중단이 되버린다.
+        ## 무중단 배포
+        ## pm2 reload 어플리케이션이 중단 없이 새로운 코드의 내용을 다시 가져온다.
         with:
           host: ${{ secrets.HOST}}
           username: ${{ secrets.USERNAME }}
@@ -113,5 +118,4 @@ jobs: # 작업의 단위
           port: ${{ secrets.PORT }}
           script: |
             cd /home/ubuntu
-            pm2 kill
-            pm2 start ./dist/main.js
+            pm2 reload system.config.js
