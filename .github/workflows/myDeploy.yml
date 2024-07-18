@@ -113,4 +113,5 @@ jobs: # 작업의 단위
           port: ${{ secrets.PORT }}
           script: |
             cd /home/ubuntu
+            pm2 kill
             pm2 start ./dist/main.js
